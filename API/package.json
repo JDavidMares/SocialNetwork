@@ -1,0 +1,31 @@
+{
+  "name": "socialnetwork",
+  "version": "1.0.0",
+  "description": "SocialNetwork NodeJS backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JDavidMares/SocialNetWork.git"
+  },
+  "author": "Jorge David Mares Sanchez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JDavidMares/SocialNetwork/issues"
+  },
+  "homepage": "https://github.com/JDavidMares/SocialNetwork#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "connect-multiparty": "^2.2.0",
+    "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.10"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
