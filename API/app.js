@@ -8,7 +8,7 @@ var app = express();
 //
 //Load routes
 //
-
+var user_routes = require('./routes/user');
 
 //
 //middleware
@@ -24,17 +24,25 @@ app.use(bodyParser.json());
 //
 //routes
 //
-app.get('/', function(req, res){
-  res.status(200).send({
-      message:"Hello World"
-  });
-});
+app.use(user_routes);
 
-app.get('/pruebas', function(req, res){
-  res.status(200).send({
-      message:"Test response server route NodeJS"
-  });
-});
+
+//////////////////////////////////////////////////////////
+// app.get('/', function(req, res){
+//   res.status(200).send({
+//       message:"Hello World"
+//   });
+// });
+//
+// app.post('/test', function(req, res){
+//   console.log(req.body);
+//   res.status(200).send({
+//       message:"Test response server route NodeJS"
+//   });
+// });
+//////////////////////////////////////////////////////////
+
+
 
 
 //export
