@@ -3,7 +3,7 @@
 function userResponse(errorNumber){
   switch(errorNumber){
     case 500 :
-      return 'Error trying to save user';
+      return 'Error in the user Controller';
       break;
 
     case 404 :
