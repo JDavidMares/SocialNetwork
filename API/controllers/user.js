@@ -59,7 +59,7 @@ function saveUser(req, res){
           user.save((err, userStored) => {
             if(err) return res.status(500).send({message: userRes.userResponse(500)});
             if(!userStored){
-                res.status(404).send({message: userRes.userResponse(404)})
+                return res.status(404).send({message: userRes.userResponse(404)})
             }
 
             res.status(200).send({user:userStored});
