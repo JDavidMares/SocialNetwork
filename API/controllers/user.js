@@ -3,7 +3,7 @@
 var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
 var userRes = require('../response/response.js');
-
+var jwt = require('../services/jwt.js');
 
 function home (req, res){
   res.status(200).send({
@@ -71,16 +71,43 @@ function saveUser(req, res){
 //
 // Function: login
 // Description:
-//
+// catch the user information, search the email in the DB, if not founf it, return a message.
+// if the user is found, compare the password and return a response.
 //
 function login(req, res){
+  var params = req.body;
+
+  var pass= params.password;
+  var email = params.email;
+
+  User.findOne({email: email}, function(err, usr){
+    if(err) return res.status(500).send({message: err });
+    if(!usr) return res.status(404).send({message: 'Error reading the user' });
+
+    if(usr){
+      bcrypt.compare(pass, usr.password, function(err, check){
+        if(err) return res.status(404).send({message: 'user not found error 500' });
+        if(!check)return res.status(404).send({message: 'User not found' });
+
+        if(params.getToken){
+          return res.status(200).send({token: jwt.createToken(usr)});
+        }else{
+           usr.password = undefined;
+           return res.status(200).send({usr});
+        }
+
+      });
+    }
+  });
 
 }
+
 //
 // Export all the function to use them in the user route file.
 //
 module.exports = {
   home,
   test,
-  saveUser
+  saveUser,
+  login
 }
