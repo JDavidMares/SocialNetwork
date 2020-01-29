@@ -2,18 +2,13 @@
 
 var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
+var mongoosePaginate = require('mongoose-pagination');
 var userRes = require('../response/response.js');
 var jwt = require('../services/jwt.js');
 
 function home (req, res){
   res.status(200).send({
-      message:"Hello World"
-  });
-}
-
-function test(req, res){
-  res.status(200).send({
-    message:"Hello test without api route"
+      message:"Hello World home"
   });
 }
 
@@ -103,11 +98,55 @@ function login(req, res){
 }
 
 //
+//Function: getUser.
+//Description:
+// catch the user Id from the URL and search the user in the DB.
+//
+function getUser(req, res){
+  var userId = req.params.id;
+
+  User.findById(userId, function(err, user){
+    if(err) return res.status(500).send({message: 'error getting the user'});
+    if(!user) return res.status(404).send({message: 'User does not exist'});
+
+    return res.status(200).send({user});
+  });
+}
+
+//
+//Function: getUsers.
+//Description:
+// This function catch the number of the current page from the URL, return all the
+// users, the total of the users and the number of the page. The number of the page
+// is calculate with the elements by page and total.
+//
+function getUsers(req, res){
+  var identityUserId = req.user.sub;
+  var page = 1;
+  var itemsPerPage= 5;
+
+  if(req.params.page) page = req.params.page;
+
+  User.find().sort('_id').paginate(page, itemsPerPage, function(err, usrs, total){
+    if(err) return res.status(500).send({message: 'error getting the users'});
+    if(!usrs) return res.status(404).send({message: 'Users does not exist'});
+
+    return res.status(200).send({
+        usrs,
+        total,
+        pages: Math.ceil(total/itemsPerPage)
+      });
+  });
+}
+
+
+//
 // Export all the function to use them in the user route file.
 //
 module.exports = {
   home,
-  test,
   saveUser,
-  login
+  login,
+  getUser,
+  getUsers
 }
